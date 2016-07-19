@@ -79,7 +79,7 @@ const BumblebeeIndicator = new Lang.Class({
         this._lockMonitor = lockFile.monitor_file(Gio.FileMonitorFlags.NONE, null);
         this._lockMonitorId = this._lockMonitor.connect('changed', Lang.bind(this, this._statusChanged));
         
-        this._setStatus(lockFile.query_exists(null))
+        this._setStatus(lockFile.query_exists(null));
     },
     
     _parseBumblebeeConfigFile: function() {
