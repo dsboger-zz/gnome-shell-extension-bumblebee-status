@@ -33,7 +33,6 @@ const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
-const AppDisplay = imports.ui.appDisplay;
 
 const Config = imports.misc.config;
 const Util = imports.misc.util;
