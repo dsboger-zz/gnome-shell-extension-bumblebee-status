@@ -147,7 +147,6 @@ const BumblebeeIndicator = new Lang.Class({
 });
 
 let _bumblebeeIndicator;
-let _origAppIconMenuRedisplay;
 
 function init(metadata) {
     let iconsDir = metadata.dir.get_child('icons');
