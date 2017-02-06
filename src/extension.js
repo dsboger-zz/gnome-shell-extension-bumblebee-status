@@ -67,7 +67,7 @@ const BumblebeeIndicator = new Lang.Class({
                                 if (app.get_n_windows()) {
                                     app.activate();
                                 } else {
-                                    Util.spawnCommandLine('nvidia-settings --ctrl-display=:' + this._virtualDisplayNumber);
+                                    Util.spawnCommandLine('optirun nvidia-settings --ctrl-display=:' + this._virtualDisplayNumber);
                                 }
                             }, 
                             nvidiaSettingsApp));
@@ -96,7 +96,26 @@ const BumblebeeIndicator = new Lang.Class({
         }
     },
     
+    _getNvidiaActiveGpu: function() {
+        try {
+            // assumes bbswitch module is present
+            let bbswitchStatusFile = Gio.File.new_for_path('/proc/acpi/bbswitch');
+            let bbswitchStatusFileContents = bbswitchStatusFile.load_contents(null);
+            if (bbswitchStatusFileContents[0]) {
+                let match = /^(\S+)\s*ON$/m.exec(new String(bbswitchStatusFileContents[1]));
+                if (match) {
+                    return match[1];
+                }
+            }
+        } catch (e) {
+        }
+    	return null;
+    },
+    
     _findGpuModelName: function() {
+		if (this._gpuModelName) {
+			return this._gpuModelName;
+		}
         // TODO use /proc/acpi/bbswitch to find out the ID of the active GPU?
         try {
             let gpusFolder = Gio.File.new_for_path('/proc/driver/nvidia/gpus');
@@ -109,7 +128,8 @@ const BumblebeeIndicator = new Lang.Class({
                 if (gpuInfoFileContents[0]) {
                     let match = /^Model:\s*(.*)$/m.exec(new String(gpuInfoFileContents[1]));
                     if (match) {
-                        return match[1];
+						this._gpuModelName = match[1];
+                        return this._gpuModelName;
                     }
                 }
             }
@@ -129,13 +149,12 @@ const BumblebeeIndicator = new Lang.Class({
 
     _setStatus: function(active, notify) {
         this._statusIndicator.visible = active;
-        this.menu.actor.visible = active;
+		let gpuModelName = this._findGpuModelName();
         if (active) {
-            if (!this._gpuModelName) {
-                this._gpuModelName = this._findGpuModelName(); // may be called only when the nvidia driver is active
-                this._subMenuItem.label.text = _("%s On").format(this._gpuModelName);
-            }
-        }
+            this._subMenuItem.label.text = _("%s On").format(gpuModelName);
+        } else {
+			this._subMenuItem.label.text = _("%s Off").format(gpuModelName);
+		}
     },
 
     destroy: function() {
