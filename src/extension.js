@@ -152,8 +152,10 @@ const BumblebeeIndicator = new Lang.Class({
 		let gpuModelName = this._findGpuModelName();
         if (active) {
             this._subMenuItem.label.text = _("%s On").format(gpuModelName);
+			this._subMenuItem.icon.icon_name = 'bumblebee-active-symbolic';
         } else {
 			this._subMenuItem.label.text = _("%s Off").format(gpuModelName);
+			this._subMenuItem.icon.icon_name = 'bumblebee-inactive-symbolic';
 		}
     },
 
