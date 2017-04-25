@@ -1,8 +1,8 @@
 {
-    "shell-version": ["3.20", "3.22"],
+    "shell-version": ["3.20", "3.22", "3.24"],
     "uuid": "gnome-shell-extension-bumblebee-status.dsboger@gmail.com",
     "name": "Bumblebee Status",
     "description": "A GNOME Shell extension that shows the status of the NVIDIA GPU in an Optimus laptop",
     "url": "https://github.com/dsboger/gnome-shell-extension-bumblebee-status",
-    "version": 2
+    "version": 3
 }
