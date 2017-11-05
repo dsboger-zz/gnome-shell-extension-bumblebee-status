@@ -40,6 +40,11 @@ const Util = imports.misc.util;
 const Gettext = imports.gettext;
 const _ = Gettext.domain('gnome-shell-extension-bumblebee-status').gettext;
 
+const _launchAppWithOptirun = function(app) {
+	let appDesktopInfo = app.get_app_info();
+	let execLine = appDesktopInfo.get_string('Exec');
+	Util.spawnCommandLine('optirun ' + execLine);
+};
 
 const BumblebeeIndicator = new Lang.Class({
 	Name: 'BumblebeeIndicator',
@@ -191,6 +196,17 @@ function enable() {
 	let powerSubmenuPosition = aggregateMenuPanelButton.menu._getMenuItems().indexOf(powerIndicator.menu);
 	aggregateMenuPanelButton._indicators.insert_child_below(_bumblebeeIndicator.indicators, powerIndicator.indicators);
 	aggregateMenuPanelButton.menu.addMenuItem(_bumblebeeIndicator.menu, powerSubmenuPosition);
+
+	if (!Main._appSwitcherActionsExtension) {
+		Main._appSwitcherActionsExtension = {};
+	}
+	Main._appSwitcherActionsExtension.bumblebeeStatusActions = [
+		{
+			label: _("Launch with optirun"),
+			action: function(source, event, app) { _launchAppWithOptirun(app); },
+			condition: function(app) { return app.get_state() == Shell.AppState.STOPPED; }
+		},
+	];
 }
 
 function disable() {
