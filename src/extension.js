@@ -30,6 +30,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
 
+const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
@@ -39,6 +40,19 @@ const Util = imports.misc.util;
 
 const Gettext = imports.gettext;
 const _ = Gettext.domain('gnome-shell-extension-bumblebee-status').gettext;
+
+var AppIconMenu_redisplay_orig;
+
+const AppIconMenu_redisplay_mod = function() {
+	AppIconMenu_redisplay_orig.apply(this, []);
+	if (this._source.app.get_state() == Shell.AppState.STOPPED) {
+		this._appendSeparator();
+		let item = this._appendMenuItem(_("Launch with optirun"));
+		item.connect('activate', Lang.bind(this, function() {
+			_launchAppWithOptirun(this._source.app);
+		}));
+	}
+};
 
 const _launchAppWithOptirun = function(app) {
 	let appDesktopInfo = app.get_app_info();
@@ -197,6 +211,9 @@ function enable() {
 	aggregateMenuPanelButton._indicators.insert_child_below(_bumblebeeIndicator.indicators, powerIndicator.indicators);
 	aggregateMenuPanelButton.menu.addMenuItem(_bumblebeeIndicator.menu, powerSubmenuPosition);
 
+	AppIconMenu_redisplay_orig = AppDisplay.AppIconMenu.prototype._redisplay;
+	AppDisplay.AppIconMenu.prototype._redisplay = AppIconMenu_redisplay_mod;
+
 	if (!Main._appSwitcherActionsExtension) {
 		Main._appSwitcherActionsExtension = {};
 	}
@@ -212,5 +229,10 @@ function enable() {
 function disable() {
 	_bumblebeeIndicator.destroy();
 	_bumblebeeIndicator = null;
+
+	AppDisplay.AppIconMenu.prototype._redisplay = AppIconMenu_redisplay_orig;
+	AppIconMenu_redisplay_orig = null;
+
+	delete Main._appSwitcherActionsExtension.bumblebeeStatusActions;
 }
 
