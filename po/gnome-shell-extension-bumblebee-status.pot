@@ -1,15 +1,15 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Davi da Silva Böger
-# This file is distributed under the same license as the gnome-shell-extension-bumblebee-status package.
+# This file is distributed under the same license as the GNU gnome-shell-extension-bumblebee-status package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell-extension-bumblebee-status 1\n"
+"Project-Id-Version: GNU gnome-shell-extension-bumblebee-status 1\n"
 "Report-Msgid-Bugs-To: https://github.com/dsboger/gnome-shell-extension-"
 "bumblebee-status/issues\n"
-"POT-Creation-Date: 2017-02-06 15:53-0200\n"
+"POT-Creation-Date: 2017-11-05 15:47-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,16 +18,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/extension.js:139
+#: src/extension.js:50 src/extension.js:222
+msgid "Launch with optirun"
+msgstr ""
+
+#: src/extension.js:158
 msgid "NVIDIA GPU"
 msgstr ""
 
-#: src/extension.js:155
+#: src/extension.js:173
 #, javascript-format
 msgid "%s On"
 msgstr ""
 
-#: src/extension.js:157
+#: src/extension.js:176
 #, javascript-format
 msgid "%s Off"
 msgstr ""
