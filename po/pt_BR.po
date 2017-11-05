@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell-extension-bumblebee-status 1\n"
 "Report-Msgid-Bugs-To: https://github.com/dsboger/gnome-shell-extension-"
 "bumblebee-status/issues\n"
-"POT-Creation-Date: 2017-02-06 15:53-0200\n"
+"POT-Creation-Date: 2017-11-05 15:47-0200\n"
 "PO-Revision-Date: 2016-07-19 00:34-0300\n"
 "Last-Translator: Davi <dsboger@gmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -18,16 +18,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/extension.js:139
+#: src/extension.js:50 src/extension.js:222
+msgid "Launch with optirun"
+msgstr "Iniciar com optirun"
+
+#: src/extension.js:158
 msgid "NVIDIA GPU"
 msgstr "GPU NVIDIA"
 
-#: src/extension.js:155
+#: src/extension.js:173
 #, javascript-format
 msgid "%s On"
 msgstr "%s ligada"
 
-#: src/extension.js:157
+#: src/extension.js:176
 #, javascript-format
 msgid "%s Off"
 msgstr "%s desligada"
