@@ -40,13 +40,9 @@ const Util = imports.misc.util;
 const Gettext = imports.gettext;
 const _ = Gettext.domain('gnome-shell-extension-bumblebee-status').gettext;
 
-
-const BumblebeeIndicator = new Lang.Class({
-	Name: 'BumblebeeIndicator',
-	Extends: PanelMenu.SystemIndicator,
-
-	_init: function() {
-		this.parent();
+class BumblebeeIndicator extends PanelMenu.SystemIndicator {
+	constructor() {
+		super();
 		this._parseBumblebeeConfigFile();
 
 		this._statusIndicator = this._addIndicator();
@@ -79,9 +75,9 @@ const BumblebeeIndicator = new Lang.Class({
 		this._lockMonitorId = this._lockMonitor.connect('changed', Lang.bind(this, this._statusChanged));
 
 		this._setStatus(lockFile.query_exists(null));
-	},
+	}
 
-	_parseBumblebeeConfigFile: function() {
+	_parseBumblebeeConfigFile() {
 		let bumblebeeConfigFile = Gio.File.new_for_path('/etc/bumblebee/bumblebee.conf');
 		let bumblebeeConfigFileContents = bumblebeeConfigFile.load_contents(null);
 		if (bumblebeeConfigFileContents[0]) {
@@ -94,9 +90,9 @@ const BumblebeeIndicator = new Lang.Class({
 		if (!this._virtualDisplayNumber) {
 			this._virtualDisplayNumber = '8';
 		}
-	},
+	}
 
-	_getNvidiaActiveGpu: function() {
+	_getNvidiaActiveGpu() {
 		try {
 			// assumes bbswitch module is present
 			let bbswitchStatusFile = Gio.File.new_for_path('/proc/acpi/bbswitch');
@@ -110,9 +106,9 @@ const BumblebeeIndicator = new Lang.Class({
 		} catch (e) {
 		}
 		return null;
-	},
+	}
 
-	_findGpuModelName: function() {
+	_findGpuModelName() {
 		if (this._gpuModelName) {
 			return this._gpuModelName;
 		}
@@ -137,17 +133,17 @@ const BumblebeeIndicator = new Lang.Class({
 		}
 		log("Could not find NVIDIA GPU model name, using general fallback.");
 		return _("NVIDIA GPU");
-	},
+	}
 
-	_statusChanged: function(monitor, a_file, other_file, event_type) {
+	_statusChanged(monitor, a_file, other_file, event_type) {
 		if (event_type == Gio.FileMonitorEvent.CREATED) {
 			this._setStatus(true);
 		} else if (event_type ==  Gio.FileMonitorEvent.DELETED) {
 			this._setStatus(false);
 		}
-	},
+	}
 
-	_setStatus: function(active, notify) {
+	_setStatus(active, notify) {
 		this._statusIndicator.visible = active;
 		let gpuModelName = this._findGpuModelName();
 		if (active) {
@@ -157,15 +153,15 @@ const BumblebeeIndicator = new Lang.Class({
 			this._subMenuItem.label.text = _("%s Off").format(gpuModelName);
 			this._subMenuItem.icon.icon_name = 'bumblebee-inactive-symbolic';
 		}
-	},
+	}
 
-	destroy: function() {
+	destroy() {
 		this._lockMonitor.disconnect(this._lockMonitorId);
 		this._lockMonitor.cancel();
 		this.indicators.destroy();
 		this.menu.destroy();
 	}
-});
+}
 
 let _bumblebeeIndicator;
 
