@@ -40,17 +40,23 @@ const Util = imports.misc.util;
 const Gettext = imports.gettext;
 const _ = Gettext.domain('gnome-shell-extension-bumblebee-status').gettext;
 
+let gicons;
+
+function setIconName(icon, name) {
+	icon.set_gicon(gicons[name]);
+}
+
 class BumblebeeIndicator extends PanelMenu.SystemIndicator {
 	constructor() {
 		super();
 		this._parseBumblebeeConfigFile();
 
 		this._statusIndicator = this._addIndicator();
-		this._statusIndicator.icon_name = 'bumblebee-active-symbolic';
+		setIconName(this._statusIndicator, 'bumblebee-active-symbolic');
 		this._statusIndicator.visible = false;
 
 		this._subMenuItem = new PopupMenu.PopupSubMenuMenuItem("Bumblebee", true);
-		this._subMenuItem.icon.icon_name = 'bumblebee-active-symbolic';
+		setIconName(this._subMenuItem.icon, 'bumblebee-active-symbolic');
 		this._subMenuItem.setSensitive(false);
 		this.menu.addMenuItem(this._subMenuItem);
 
@@ -148,10 +154,10 @@ class BumblebeeIndicator extends PanelMenu.SystemIndicator {
 		let gpuModelName = this._findGpuModelName();
 		if (active) {
 			this._subMenuItem.label.text = _("%s On").format(gpuModelName);
-			this._subMenuItem.icon.icon_name = 'bumblebee-active-symbolic';
+			setIconName(this._subMenuItem.icon, 'bumblebee-active-symbolic');
 		} else {
 			this._subMenuItem.label.text = _("%s Off").format(gpuModelName);
-			this._subMenuItem.icon.icon_name = 'bumblebee-inactive-symbolic';
+			setIconName(this._subMenuItem.icon, 'bumblebee-inactive-symbolic');
 		}
 	}
 
@@ -167,9 +173,10 @@ let _bumblebeeIndicator;
 
 function init(metadata) {
 	let iconsDir = metadata.dir.get_child('icons');
-	if (iconsDir.query_exists(null)) {
-		Gtk.IconTheme.get_default().append_search_path(iconsDir.get_path());
-	} // else, icon should be in hicolor already
+	gicons = { 
+		'bumblebee-active-symbolic': Gio.icon_new_for_string(iconsDir.get_child('bumblebee-active-symbolic.svg').get_path()),
+		'bumblebee-inactive-symbolic': Gio.icon_new_for_string(iconsDir.get_child('bumblebee-inactive-symbolic.svg').get_path())
+	};
 
 	let localeDir = metadata.dir.get_child('locale');
 	if (localeDir.query_exists(null)) {
