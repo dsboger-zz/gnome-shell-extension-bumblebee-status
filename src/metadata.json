@@ -1,5 +1,5 @@
 {
-	"shell-version": ["3.32"],
+	"shell-version": ["3.36"],
 	"uuid": "gnome-shell-extension-bumblebee-status.dsboger@gmail.com",
 	"name": "Bumblebee Status",
 	"description": "Shows the status of the NVIDIA GPU in an Optimus laptop using Bumblebee",

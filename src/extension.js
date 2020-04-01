@@ -29,6 +29,7 @@ const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
+const GObject = imports.gi.GObject
 
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
@@ -46,9 +47,9 @@ function setIconName(icon, name) {
 	icon.set_gicon(gicons[name]);
 }
 
-class BumblebeeIndicator extends PanelMenu.SystemIndicator {
-	constructor() {
-		super();
+let BumblebeeIndicator = GObject.registerClass(class BumblebeeIndicator extends PanelMenu.SystemIndicator {
+	_init() {
+		super._init();
 		this._parseBumblebeeConfigFile();
 
 		this._statusIndicator = this._addIndicator();
@@ -167,7 +168,7 @@ class BumblebeeIndicator extends PanelMenu.SystemIndicator {
 		this.indicators.destroy();
 		this.menu.destroy();
 	}
-}
+});
 
 let _bumblebeeIndicator;
 
